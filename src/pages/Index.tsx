@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 
 const AGENT_PHOTO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a909-12537f4a91a8/files/9fc562b7-b26b-4a6a-9f74-4f54e8a0b823.jpg";
-const APARTMENT_PHOTO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a909-12537f4a91a8/files/8aba8cff-6ac2-4a81-9e47-dd16ef07d925.jpg";
+const APARTMENT_PHOTO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a909-12537f4a91a8/files/9c054b62-a78c-49eb-9886-9f4fcd91a005.jpg";
 
 const PHONE = "+79161022727";
 const PHONE_DISPLAY = "+7-916-102-27-27";
