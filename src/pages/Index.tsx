@@ -208,18 +208,18 @@ const Index = () => {
     <div className="min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
 
       {/* NAV */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-white/95 backdrop-blur-sm shadow-sm"}`}>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[hsl(var(--border))] shadow-sm">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="#" className="font-body text-sm text-[hsl(var(--muted-foreground))] tracking-wide">
-            Эксперт по недвижимости · <span className="text-[hsl(var(--foreground))] font-medium">Агентство «Этажи»</span>
+          <a href="#" className="font-body text-sm text-[hsl(var(--muted-foreground))] tracking-wide whitespace-nowrap">
+            Эксперт по недвижимости&nbsp;·&nbsp;<span className="text-[hsl(var(--foreground))] font-medium">Агентство «Этажи»</span>
           </a>
-          <div className="hidden md:flex items-center gap-7">
+          <div className="hidden md:flex items-center gap-6">
             {NAV_LINKS.map(l => (
               <a key={l.href} href={l.href} className="nav-link text-sm font-body text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors">
                 {l.label}
               </a>
             ))}
-            <a href={`tel:${PHONE}`} className="ml-2 px-5 py-2 bg-[hsl(var(--foreground))] text-white text-sm rounded hover:opacity-80 transition-opacity flex items-center gap-2">
+            <a href={`tel:${PHONE}`} className="ml-2 px-5 py-2 bg-[var(--blue)] text-white text-sm rounded hover:bg-[var(--blue-dark)] transition-colors flex items-center gap-2">
               <Icon name="Phone" size={14} /> Позвонить
             </a>
           </div>
@@ -233,11 +233,11 @@ const Index = () => {
               <a key={l.href} href={l.href} onClick={() => setMobileOpen(false)} className="text-sm font-body text-[hsl(var(--foreground))]">{l.label}</a>
             ))}
             <div className="flex gap-3">
-              <a href={`tel:${PHONE}`} className="flex-1 px-4 py-2.5 bg-[hsl(var(--foreground))] text-white text-sm rounded text-center flex items-center justify-center gap-2">
+              <a href={`tel:${PHONE}`} className="flex-1 px-4 py-2.5 bg-[var(--blue)] text-white text-sm rounded text-center flex items-center justify-center gap-2">
                 <Icon name="Phone" size={14} /> Позвонить
               </a>
               <a href={TG_LINK} target="_blank" rel="noreferrer" className="flex-1 px-4 py-2.5 border border-[hsl(var(--border))] text-sm rounded text-center flex items-center justify-center gap-2">
-                ✈️ Telegram
+                Telegram
               </a>
             </div>
           </div>
@@ -245,10 +245,10 @@ const Index = () => {
       </nav>
 
       {/* HERO */}
-      <section id="hero" className="min-h-screen flex flex-col">
-        <div className="flex-1 grid md:grid-cols-2">
+      <section id="hero" className="pt-16 min-h-screen flex flex-col">
+        <div className="flex-1 grid md:grid-cols-[1fr_420px] lg:grid-cols-[1fr_480px]">
           {/* Left — text */}
-          <div className="flex flex-col justify-center px-8 md:px-16 py-32 bg-white">
+          <div className="flex flex-col justify-center px-8 md:px-16 py-20 bg-white">
             <p className="animate-fade-up text-xs uppercase tracking-[0.2em] text-[var(--blue)] font-body mb-5">
               Ярославль · Россия · Турция · ОАЭ
             </p>
@@ -264,20 +264,27 @@ const Index = () => {
               Решаю нестандартные задачи. Одобряю ипотеку с плохой кредитной историей. Продажа новостроек со скидкой.
             </p>
             <div className="animate-fade-up-delay-3 flex flex-wrap gap-3">
-              <a href={`tel:${PHONE}`} className="px-7 py-3.5 bg-[hsl(var(--foreground))] text-white font-body text-sm tracking-wide rounded hover:opacity-80 transition-opacity flex items-center gap-2">
+              <a href={`tel:${PHONE}`} className="px-7 py-3.5 bg-[var(--blue)] text-white font-body text-sm tracking-wide rounded hover:bg-[var(--blue-dark)] transition-colors flex items-center gap-2">
                 <Icon name="Phone" size={15} /> Позвонить
               </a>
-              <a href={MAX_LINK} target="_blank" rel="noreferrer" className="px-7 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm tracking-wide rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2">
-                <span className="font-bold text-[var(--blue)]">MAX</span> Написать
+              <a href={MAX_LINK} target="_blank" rel="noreferrer" className="px-6 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm tracking-wide rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2">
+                <img src="https://max.ru/favicon.ico" alt="MAX" className="w-4 h-4 rounded-sm" onError={e => (e.currentTarget.style.display='none')} />
+                <span className="font-semibold">MAX</span>
               </a>
-              <a href={TG_LINK} target="_blank" rel="noreferrer" className="px-7 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm tracking-wide rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2">
-                ✈️ Telegram
+              <a href={TG_LINK} target="_blank" rel="noreferrer" className="px-6 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm tracking-wide rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-[#229ED9]"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.04 9.613c-.153.68-.555.847-1.124.527l-3.1-2.284-1.495 1.438c-.165.165-.305.305-.625.305l.223-3.164 5.754-5.196c.25-.223-.054-.346-.387-.123L7.04 14.748l-3.064-.957c-.666-.208-.68-.666.14-.987l11.97-4.614c.555-.2 1.04.124.877.985-.001.001-.001.001-.001.073z"/></svg>
+                Telegram
               </a>
             </div>
           </div>
           {/* Right — photo */}
-          <div className="relative hidden md:block bg-gray-50 overflow-hidden">
-            <img src={AGENT_PHOTO} alt="Фёдоров Дмитрий" className="w-full h-full object-cover object-center" style={{maxHeight: "100vh"}} />
+          <div className="relative hidden md:flex items-end bg-[var(--blue-light)] overflow-hidden">
+            <img
+              src={AGENT_PHOTO}
+              alt="Фёдоров Дмитрий"
+              className="w-full object-cover object-top"
+              style={{height: "calc(100vh - 64px)", objectPosition: "center top"}}
+            />
           </div>
         </div>
         {/* Stats bar */}
@@ -460,7 +467,7 @@ const Index = () => {
                   </div>
                 </a>
                 <a href={MAX_LINK} target="_blank" rel="noreferrer" className="flex items-center gap-4 group">
-                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-white group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors font-bold text-sm">
+                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-white group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors font-bold text-xs">
                     MAX
                   </div>
                   <div>
@@ -469,8 +476,8 @@ const Index = () => {
                   </div>
                 </a>
                 <a href={TG_LINK} target="_blank" rel="noreferrer" className="flex items-center gap-4 group">
-                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-white group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors">
-                    <span className="text-lg">✈️</span>
+                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="text-[#229ED9]"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.04 9.613c-.153.68-.555.847-1.124.527l-3.1-2.284-1.495 1.438c-.165.165-.305.305-.625.305l.223-3.164 5.754-5.196c.25-.223-.054-.346-.387-.123L7.04 14.748l-3.064-.957c-.666-.208-.68-.666.14-.987l11.97-4.614c.555-.2 1.04.124.877.985-.001.001-.001.001-.001.073z"/></svg>
                   </div>
                   <div>
                     <p className="font-body text-white text-sm font-medium">Telegram</p>
