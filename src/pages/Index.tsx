@@ -6,8 +6,8 @@ const APARTMENT_PHOTO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a90
 
 const PHONE = "+79161022727";
 const PHONE_DISPLAY = "+7-916-102-27-27";
-const WA_LINK = "https://wa.me/79161022727";
 const TG_LINK = "https://t.me/+79161022727";
+const MAX_LINK = "https://max.ru/im?phone=79161022727";
 
 const NAV_LINKS = [
   { label: "Услуги", href: "#services" },
@@ -208,10 +208,10 @@ const Index = () => {
     <div className="min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
 
       {/* NAV */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent"}`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-white/95 backdrop-blur-sm shadow-sm"}`}>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="#" className="font-display text-xl font-semibold tracking-wide text-[hsl(var(--foreground))]">
-            Фёдоров Дмитрий
+          <a href="#" className="font-body text-sm text-[hsl(var(--muted-foreground))] tracking-wide">
+            Эксперт по недвижимости · <span className="text-[hsl(var(--foreground))] font-medium">Агентство «Этажи»</span>
           </a>
           <div className="hidden md:flex items-center gap-7">
             {NAV_LINKS.map(l => (
@@ -219,7 +219,7 @@ const Index = () => {
                 {l.label}
               </a>
             ))}
-            <a href={`tel:${PHONE}`} className="ml-2 px-5 py-2 bg-[var(--blue)] text-white text-sm rounded hover:bg-[var(--blue-dark)] transition-colors flex items-center gap-2">
+            <a href={`tel:${PHONE}`} className="ml-2 px-5 py-2 bg-[hsl(var(--foreground))] text-white text-sm rounded hover:opacity-80 transition-opacity flex items-center gap-2">
               <Icon name="Phone" size={14} /> Позвонить
             </a>
           </div>
@@ -233,11 +233,11 @@ const Index = () => {
               <a key={l.href} href={l.href} onClick={() => setMobileOpen(false)} className="text-sm font-body text-[hsl(var(--foreground))]">{l.label}</a>
             ))}
             <div className="flex gap-3">
-              <a href={`tel:${PHONE}`} className="flex-1 px-4 py-2.5 bg-[var(--blue)] text-white text-sm rounded text-center flex items-center justify-center gap-2">
+              <a href={`tel:${PHONE}`} className="flex-1 px-4 py-2.5 bg-[hsl(var(--foreground))] text-white text-sm rounded text-center flex items-center justify-center gap-2">
                 <Icon name="Phone" size={14} /> Позвонить
               </a>
-              <a href={WA_LINK} className="flex-1 px-4 py-2.5 border border-[hsl(var(--border))] text-sm rounded text-center flex items-center justify-center gap-2">
-                💬 WhatsApp
+              <a href={TG_LINK} target="_blank" rel="noreferrer" className="flex-1 px-4 py-2.5 border border-[hsl(var(--border))] text-sm rounded text-center flex items-center justify-center gap-2">
+                ✈️ Telegram
               </a>
             </div>
           </div>
@@ -249,33 +249,35 @@ const Index = () => {
         <div className="flex-1 grid md:grid-cols-2">
           {/* Left — text */}
           <div className="flex flex-col justify-center px-8 md:px-16 py-32 bg-white">
-            <p className="animate-fade-up text-xs uppercase tracking-[0.2em] text-[var(--blue)] font-body mb-4">
-              Эксперт по недвижимости · Агентство «Этажи»
+            <p className="animate-fade-up text-xs uppercase tracking-[0.2em] text-[var(--blue)] font-body mb-5">
+              Ярославль · Россия · Турция · ОАЭ
             </p>
-            <h1 className="animate-fade-up-delay-1 font-display text-6xl md:text-7xl font-light leading-[1.05] mb-3 text-[hsl(var(--foreground))]">
+            <h1 className="animate-fade-up-delay-1 font-display text-6xl md:text-7xl font-light leading-[1.05] mb-5 text-[hsl(var(--foreground))]">
               Фёдоров<br/>
               <span className="text-[var(--blue)]">Дмитрий</span>
             </h1>
-            <a href={`tel:${PHONE}`} className="animate-fade-up-delay-1 inline-flex items-center gap-2 font-body text-lg text-[hsl(var(--muted-foreground))] hover:text-[var(--blue)] transition-colors mb-6 w-fit">
-              <Icon name="Phone" size={18} />
+            <a href={`tel:${PHONE}`} className="animate-fade-up-delay-1 inline-flex items-center gap-2 font-body text-base text-[hsl(var(--muted-foreground))] hover:text-[var(--blue)] transition-colors mb-5 w-fit">
+              <Icon name="Phone" size={16} />
               {PHONE_DISPLAY}
             </a>
             <p className="animate-fade-up-delay-2 font-body text-base text-[hsl(var(--muted-foreground))] leading-relaxed mb-8 max-w-sm">
               Решаю нестандартные задачи. Одобряю ипотеку с плохой кредитной историей. Продажа новостроек со скидкой.
             </p>
             <div className="animate-fade-up-delay-3 flex flex-wrap gap-3">
-              <a href={`tel:${PHONE}`} className="px-7 py-3.5 bg-[var(--blue)] text-white font-body text-sm tracking-wide rounded hover:bg-[var(--blue-dark)] transition-colors shadow-lg shadow-red-100 flex items-center gap-2">
-                📞 Позвонить
+              <a href={`tel:${PHONE}`} className="px-7 py-3.5 bg-[hsl(var(--foreground))] text-white font-body text-sm tracking-wide rounded hover:opacity-80 transition-opacity flex items-center gap-2">
+                <Icon name="Phone" size={15} /> Позвонить
               </a>
-              <a href={WA_LINK} target="_blank" rel="noreferrer" className="px-7 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm tracking-wide rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2">
-                💬 WhatsApp
+              <a href={MAX_LINK} target="_blank" rel="noreferrer" className="px-7 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm tracking-wide rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2">
+                <span className="font-bold text-[var(--blue)]">MAX</span> Написать
+              </a>
+              <a href={TG_LINK} target="_blank" rel="noreferrer" className="px-7 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm tracking-wide rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2">
+                ✈️ Telegram
               </a>
             </div>
           </div>
           {/* Right — photo */}
-          <div className="relative hidden md:block bg-gray-100">
-            <img src={AGENT_PHOTO} alt="Фёдоров Дмитрий" className="w-full h-full object-cover object-top" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+          <div className="relative hidden md:block bg-gray-50 overflow-hidden">
+            <img src={AGENT_PHOTO} alt="Фёдоров Дмитрий" className="w-full h-full object-cover object-center" style={{maxHeight: "100vh"}} />
           </div>
         </div>
         {/* Stats bar */}
@@ -417,7 +419,7 @@ const Index = () => {
         <div className="mb-14">
           <p className="text-xs uppercase tracking-[0.2em] text-[var(--blue)] font-body mb-3">Клиенты о работе</p>
           <h2 className="font-display text-5xl font-light">Отзывы</h2>
-          <p className="font-body text-[hsl(var(--muted-foreground))] mt-3 text-sm">Скриншоты из WhatsApp и Telegram — по запросу.</p>
+          <p className="font-body text-[hsl(var(--muted-foreground))] mt-3 text-sm">Скриншоты из Telegram и MAX — по запросу.</p>
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {REVIEWS.map((r) => (
@@ -449,29 +451,29 @@ const Index = () => {
               </p>
               <div className="space-y-4 mb-8">
                 <a href={`tel:${PHONE}`} className="flex items-center gap-4 group">
-                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-red-400 group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors">
+                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-white group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors">
                     <Icon name="Phone" size={18} />
                   </div>
                   <div>
-                    <p className="font-body text-white text-sm font-medium group-hover:text-red-300 transition-colors">{PHONE_DISPLAY}</p>
+                    <p className="font-body text-white text-sm font-medium">{PHONE_DISPLAY}</p>
                     <p className="font-body text-gray-500 text-xs">Звонки</p>
                   </div>
                 </a>
-                <a href={WA_LINK} target="_blank" rel="noreferrer" className="flex items-center gap-4 group">
-                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-red-400 group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors">
-                    <span className="text-lg">💬</span>
+                <a href={MAX_LINK} target="_blank" rel="noreferrer" className="flex items-center gap-4 group">
+                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-white group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors font-bold text-sm">
+                    MAX
                   </div>
                   <div>
-                    <p className="font-body text-white text-sm font-medium group-hover:text-red-300 transition-colors">WhatsApp</p>
-                    <p className="font-body text-gray-500 text-xs">{PHONE_DISPLAY}</p>
+                    <p className="font-body text-white text-sm font-medium">MAX</p>
+                    <p className="font-body text-gray-500 text-xs">Написать сообщение</p>
                   </div>
                 </a>
                 <a href={TG_LINK} target="_blank" rel="noreferrer" className="flex items-center gap-4 group">
-                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-red-400 group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors">
+                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-white group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors">
                     <span className="text-lg">✈️</span>
                   </div>
                   <div>
-                    <p className="font-body text-white text-sm font-medium group-hover:text-red-300 transition-colors">Telegram</p>
+                    <p className="font-body text-white text-sm font-medium">Telegram</p>
                     <p className="font-body text-gray-500 text-xs">Написать в мессенджер</p>
                   </div>
                 </a>
@@ -494,13 +496,13 @@ const Index = () => {
                 </button>
                 <p className="text-center text-gray-600 text-xs pt-1">Или свяжитесь напрямую:</p>
                 <div className="flex gap-3">
-                  <a href={`tel:${PHONE}`} className="flex-1 py-2.5 border border-white/10 text-white text-xs rounded text-center hover:border-red-500 transition-colors flex items-center justify-center gap-1.5">
-                    📞 Позвонить
+                  <a href={`tel:${PHONE}`} className="flex-1 py-2.5 border border-white/10 text-white text-xs rounded text-center hover:border-white/40 transition-colors flex items-center justify-center gap-1.5">
+                    <Icon name="Phone" size={13} /> Позвонить
                   </a>
-                  <a href={WA_LINK} target="_blank" rel="noreferrer" className="flex-1 py-2.5 border border-white/10 text-white text-xs rounded text-center hover:border-red-500 transition-colors flex items-center justify-center gap-1.5">
-                    💬 WhatsApp
+                  <a href={MAX_LINK} target="_blank" rel="noreferrer" className="flex-1 py-2.5 border border-white/10 text-white text-xs rounded text-center hover:border-white/40 transition-colors flex items-center justify-center gap-1.5 font-medium">
+                    MAX
                   </a>
-                  <a href={TG_LINK} target="_blank" rel="noreferrer" className="flex-1 py-2.5 border border-white/10 text-white text-xs rounded text-center hover:border-red-500 transition-colors flex items-center justify-center gap-1.5">
+                  <a href={TG_LINK} target="_blank" rel="noreferrer" className="flex-1 py-2.5 border border-white/10 text-white text-xs rounded text-center hover:border-white/40 transition-colors flex items-center justify-center gap-1.5">
                     ✈️ Telegram
                   </a>
                 </div>
