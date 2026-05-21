@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 
-const AGENT_PHOTO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a909-12537f4a91a8/files/9fc562b7-b26b-4a6a-9f74-4f54e8a0b823.jpg";
-const APARTMENT_PHOTO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a909-12537f4a91a8/files/9c054b62-a78c-49eb-9886-9f4fcd91a005.jpg";
+const AGENT_PHOTO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a909-12537f4a91a8/bucket/acfe706d-f06a-4908-b4b6-034beafcc847.jpg";
+const APARTMENT_PHOTO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a909-12537f4a91a8/bucket/acfe706d-f06a-4908-b4b6-034beafcc847.jpg";
 
 const PHONE = "+79161022727";
 const PHONE_DISPLAY = "+7-916-102-27-27";
@@ -245,25 +245,22 @@ const Index = () => {
       </nav>
 
       {/* HERO */}
-      <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img src={APARTMENT_PHOTO} alt="Недвижимость" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-white/97 via-white/85 to-white/20" />
-        </div>
-        <div className="relative z-10 max-w-6xl mx-auto px-6 py-32">
-          <div className="max-w-xl">
+      <section id="hero" className="min-h-screen flex flex-col">
+        <div className="flex-1 grid md:grid-cols-2">
+          {/* Left — text */}
+          <div className="flex flex-col justify-center px-8 md:px-16 py-32 bg-white">
             <p className="animate-fade-up text-xs uppercase tracking-[0.2em] text-[var(--blue)] font-body mb-4">
               Эксперт по недвижимости · Агентство «Этажи»
             </p>
-            <h1 className="animate-fade-up-delay-1 font-display text-6xl md:text-7xl font-light leading-[1.05] mb-3">
+            <h1 className="animate-fade-up-delay-1 font-display text-6xl md:text-7xl font-light leading-[1.05] mb-3 text-[hsl(var(--foreground))]">
               Фёдоров<br/>
               <span className="text-[var(--blue)]">Дмитрий</span>
             </h1>
-            <a href={`tel:${PHONE}`} className="animate-fade-up-delay-1 inline-flex items-center gap-2 font-body text-lg text-[hsl(var(--muted-foreground))] hover:text-[var(--blue)] transition-colors mb-6">
+            <a href={`tel:${PHONE}`} className="animate-fade-up-delay-1 inline-flex items-center gap-2 font-body text-lg text-[hsl(var(--muted-foreground))] hover:text-[var(--blue)] transition-colors mb-6 w-fit">
               <Icon name="Phone" size={18} />
               {PHONE_DISPLAY}
             </a>
-            <p className="animate-fade-up-delay-2 font-body text-lg text-[hsl(var(--muted-foreground))] leading-relaxed mb-8 max-w-md">
+            <p className="animate-fade-up-delay-2 font-body text-base text-[hsl(var(--muted-foreground))] leading-relaxed mb-8 max-w-sm">
               Решаю нестандартные задачи. Одобряю ипотеку с плохой кредитной историей. Продажа новостроек со скидкой.
             </p>
             <div className="animate-fade-up-delay-3 flex flex-wrap gap-3">
@@ -271,12 +268,18 @@ const Index = () => {
                 📞 Позвонить
               </a>
               <a href={WA_LINK} target="_blank" rel="noreferrer" className="px-7 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm tracking-wide rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2">
-                💬 Написать в WhatsApp
+                💬 WhatsApp
               </a>
             </div>
           </div>
+          {/* Right — photo */}
+          <div className="relative hidden md:block bg-gray-100">
+            <img src={AGENT_PHOTO} alt="Фёдоров Дмитрий" className="w-full h-full object-cover object-top" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+          </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-[hsl(var(--border))]">
+        {/* Stats bar */}
+        <div className="bg-white border-t border-[hsl(var(--border))]">
           <div className="max-w-6xl mx-auto px-6 py-5 grid grid-cols-3 divide-x divide-[hsl(var(--border))]">
             {[["200+", "сделок закрыто"], ["Этажи", "федеральная сеть"], ["Россия, Турция, ОАЭ", "география работы"]].map(([n, l]) => (
               <div key={n} className="px-6 first:pl-0 last:pr-0 text-center">
