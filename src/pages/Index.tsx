@@ -3,7 +3,6 @@ import Icon from "@/components/ui/icon";
 
 const AGENT_PHOTO = "/agent.jpg";
 const BONUS_PHOTO = "/bonus.jpg";
-const ETAZHI_LOGO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a909-12537f4a91a8/bucket/e45f4859-3e09-4caa-83da-8d1a09cab0d9.jpg";
 const LEAD_URL = "https://functions.poehali.dev/8bf16f0b-bdf9-4126-94f3-a7db6c034ea0";
 
 const PHONE = "+79161022727";
@@ -38,7 +37,7 @@ const PROBLEMS = [
   {
     icon: "ShieldCheck",
     fear: "«Куплю ли я кота в мешке?»",
-    solution: "Работаем через договор федеральной сети «Этажи». Полная юридическая проверка объекта и собственников. Предоставляем гарантийный сертификат на\u00A010\u00A0000\u00A0000\u00A0рублей.",
+    solution: "Работаем через договор! Полная юридическая проверка объекта и собственников. Предоставляем гарантийный сертификат на\u00A010\u00A0000\u00A0000\u00A0рублей.",
     tag: "Гарантия 10 млн ₽",
   },
 ];
@@ -75,7 +74,7 @@ const GEO_ITEMS = [
   {
     icon: "Map",
     title: "Вся Россия",
-    desc: "Межрегиональные сделки через партнёрскую сеть «Этажи». Покупка и продажа недвижимости в любом городе РФ без лишних посредников.",
+    desc: "Межрегиональные сделки по всей стране. Покупка и продажа недвижимости в любом городе РФ без лишних посредников.",
   },
   {
     icon: "Globe",
@@ -127,7 +126,7 @@ function MortgageCalc() {
 
   const sliders = [
     { label: "Стоимость жилья", value: price, set: setPrice, min: 1000000, max: 80000000, step: 100000, fmt: (v: number) => `${formatMoney(v)} ₽`, minLabel: "1 млн", maxLabel: "80 млн", pct: (price - 1000000) / 79000000 },
-    { label: "Первоначальный взнос", value: down, set: setDown, min: 10, max: 90, step: 1, fmt: (v: number) => `${v}% — ${formatMoney(price * v / 100)} ₽`, minLabel: "10%", maxLabel: "90%", pct: (down - 10) / 80 },
+    { label: "Первоначальный взнос", value: down, set: setDown, min: 1, max: 90, step: 1, fmt: (v: number) => `${v}% — ${formatMoney(price * v / 100)} ₽`, minLabel: "1%", maxLabel: "90%", pct: (down - 1) / 89 },
     { label: "Ставка по ипотеке", value: rate, set: setRate, min: 1, max: 30, step: 0.1, fmt: (v: number) => `${v}% годовых`, minLabel: "1%", maxLabel: "30%", pct: (rate - 1) / 29 },
     { label: "Срок кредита", value: term, set: setTerm, min: 1, max: 35, step: 1, fmt: (v: number) => `${v} лет`, minLabel: "1 год", maxLabel: "35 лет", pct: (term - 1) / 34 },
   ];
@@ -327,10 +326,9 @@ const Index = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[hsl(var(--border))] shadow-sm">
         <div className="w-full px-4 lg:px-6 h-16 flex items-center justify-between gap-4">
           <a href="#" className="flex items-center gap-3 shrink-0">
-            <img src={ETAZHI_LOGO} alt="Этажи" className="h-7 w-auto object-contain" />
-            <div className="border-l border-[hsl(var(--border))] pl-3 whitespace-nowrap">
+            <div className="whitespace-nowrap">
               <p className="font-body text-xs text-[hsl(var(--muted-foreground))] leading-tight">Эксперт по недвижимости</p>
-              <p className="font-body text-xs font-semibold text-[hsl(var(--foreground))] leading-tight">Агентство «Этажи»</p>
+              <p className="font-body text-sm font-semibold text-[hsl(var(--foreground))] leading-tight">Фёдоров Дмитрий</p>
             </div>
           </a>
           <div className="hidden lg:flex items-center gap-4 xl:gap-6 flex-1 justify-center">
@@ -500,11 +498,11 @@ const Index = () => {
                 Стаж более 5 лет. Строю репутацию на честности, профессионализме и умении решать нестандартные задачи. Ко мне приходят клиенты, которые уже отчаялись — я нахожу выход.
               </p>
               <p className="font-body text-[hsl(var(--muted-foreground))] leading-relaxed mb-8">
-                Работаю в агентстве «Этажи» — одной из крупнейших риэлторских сетей России. Это означает официальное оформление, гарантии безопасности и юридической чистоты каждой сделки.
+                Работаю по официальному договору. Это означает прозрачное оформление, гарантии безопасности и юридической чистоты каждой сделки.
               </p>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  ["Агентство «Этажи»", "Федеральная сеть"],
+                  ["Работа по договору", "Прозрачные условия"],
                   ["Ипотека с плохой историей", "Найду решение"],
                   ["Скидки на новостройки", "Партнёрские условия"],
                   ["Гарантийный сертификат", "на\u00A010\u00A0000\u00A0000\u00A0рублей"],
@@ -651,15 +649,6 @@ const Index = () => {
                     <p className="font-body text-gray-500 text-xs">Электронная почта</p>
                   </div>
                 </a>
-                <a href="https://yar.etagi.com" target="_blank" rel="noreferrer" className="flex items-center gap-4 group">
-                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-white group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors">
-                    <Icon name="Globe" size={18} />
-                  </div>
-                  <div>
-                    <p className="font-body text-white text-sm font-medium">yar.etagi.com</p>
-                    <p className="font-body text-gray-500 text-xs">Сайт компании «Этажи»</p>
-                  </div>
-                </a>
               </div>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-lg p-8">
@@ -677,7 +666,7 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-10 mb-8">
             <div>
               <p className="font-body text-white/80 text-sm font-medium mb-1">Фёдоров Дмитрий</p>
-              <p className="font-body text-gray-500 text-xs leading-relaxed">Ваш специалист в сфере недвижимости.<br/>Партнёр федеральной сети «Этажи».</p>
+              <p className="font-body text-gray-500 text-xs leading-relaxed">Ваш специалист в сфере недвижимости.</p>
               <p className="font-body text-gray-600 text-xs mt-3">Скоро: Telegram-канал «Недвижимость без рисков»</p>
             </div>
             <div>
@@ -693,9 +682,6 @@ const Index = () => {
                 <a href="mailto:89161022727@mail.ru" className="font-body text-gray-400 text-sm flex items-center gap-2 hover:text-white transition-colors">
                   <Icon name="Mail" size={14} className="shrink-0 text-[var(--blue)]" /> 89161022727@mail.ru
                 </a>
-                <a href="https://yar.etagi.com" target="_blank" rel="noreferrer" className="font-body text-gray-400 text-sm flex items-center gap-2 hover:text-white transition-colors">
-                  <Icon name="Globe" size={14} className="shrink-0 text-[var(--blue)]" /> yar.etagi.com (сайт компании «Этажи»)
-                </a>
               </div>
             </div>
             <div>
@@ -709,7 +695,7 @@ const Index = () => {
           </div>
           <div className="border-t border-white/5 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
             <p className="font-body text-gray-600 text-xs">© 2025 Фёдоров Дмитрий. Все права защищены.</p>
-            <p className="font-body text-gray-600 text-xs">Риэлтор в Ярославле · Агентство «Этажи»</p>
+            <p className="font-body text-gray-600 text-xs">Риэлтор в Ярославле</p>
           </div>
         </div>
       </footer>
