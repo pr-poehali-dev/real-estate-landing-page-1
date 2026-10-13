@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 
 const AGENT_PHOTO = "/agent.jpg";
 const BONUS_PHOTO = "/bonus.jpg";
+const HERO_PHOTO = "/hero.jpg";
 const LEAD_URL = "https://functions.poehali.dev/8bf16f0b-bdf9-4126-94f3-a7db6c034ea0";
 
 const PHONE = "+79161022727";
@@ -394,8 +395,8 @@ const Index = () => {
             </div>
           </div>
           <div className="relative hidden md:flex items-end bg-[var(--blue-light)] overflow-hidden">
-            <img src={AGENT_PHOTO} alt="Фёдоров Дмитрий — риэлтор в Ярославле" className="w-full object-cover object-top"
-              style={{ height: "calc(100vh - 64px)", objectPosition: "center top" }} />
+            <img src={HERO_PHOTO} alt="Передача ключей от квартиры" className="w-full object-cover"
+              style={{ height: "calc(100vh - 64px)", objectPosition: "55% center" }} />
           </div>
         </div>
         <div className="bg-white border-t border-[hsl(var(--border))]">
