@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import Icon from "@/components/ui/icon";
 
 const AGENT_PHOTO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a909-12537f4a91a8/bucket/acfe706d-f06a-4908-b4b6-034beafcc847.jpg";
@@ -26,7 +26,7 @@ const PROBLEMS = [
   {
     icon: "AlertCircle",
     fear: "«Мне везде отказывают в ипотеке...»",
-    solution: "Работаем как ипотечный брокер: подаём заявки сразу во все банки-партнёры и находим вариант с максимальным шансом одобрения — даже при плохой кредитной истории или «серых» доходах.",
+    solution: "Работают профессиональные ипотечные брокеры: подаём заявки сразу во все банки-партнёры и находим вариант с максимальным шансом одобрения — даже при плохой кредитной истории или «серых» доходах.",
     tag: "Ипотека с плохой историей",
   },
   {
@@ -38,7 +38,7 @@ const PROBLEMS = [
   {
     icon: "ShieldCheck",
     fear: "«Куплю ли я кота в мешке?»",
-    solution: "Работаем через договор федеральной сети «Этажи». Полная юридическая проверка объекта и собственников. Предоставляем гарантийный сертификат на 10 000 000 рублей.",
+    solution: "Работаем через договор федеральной сети «Этажи». Полная юридическая проверка объекта и собственников. Предоставляем гарантийный сертификат на\u00A010\u00A0000\u00A0000\u00A0рублей.",
     tag: "Гарантия 10 млн ₽",
   },
 ];
@@ -47,7 +47,7 @@ const SERVICES = [
   {
     icon: "Building2",
     title: "Новостройки",
-    desc: "Поиск ликвидных ЖК по всей России. Доступ к закрытым акциям застройщиков. Все виды ипотеки: стандартная, военная, семейная, льготная. Партнёрские скидки ниже рынка.",
+    desc: "Поиск ликвидных ЖК. Доступ к закрытым акциям застройщиков. Все виды ипотеки: стандартная, военная, семейная, льготная. Партнёрские скидки ниже рынка.",
   },
   {
     icon: "Home",
@@ -57,7 +57,7 @@ const SERVICES = [
   {
     icon: "Trees",
     title: "Дома и участки",
-    desc: "Геологические изыскания и проверка грунтов. Юридическая проверка документов и статуса земли. Партнёрство с более чем 30 подрядными организациями по строительству.",
+    desc: "Инженерно-геологический анализ участка и юридическая проверка документов. Подбор проверенного подрядчика: сотрудничаем с более чем 30 организациями по строительству домов.",
   },
   {
     icon: "Briefcase",
@@ -100,7 +100,20 @@ function formatMoney(n: number) {
   return new Intl.NumberFormat("ru-RU").format(Math.round(n));
 }
 
-// Telegram SVG icon
+const MaxIcon = ({ size = 16 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+    <defs>
+      <linearGradient id="maxGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stopColor="#2AABEE" />
+        <stop offset="1" stopColor="#7B3FE4" />
+      </linearGradient>
+    </defs>
+    <rect width="24" height="24" rx="7" fill="url(#maxGrad)" />
+    <path d="M12 4.5c-4.1 0-7.2 3-7.2 7 0 1.6.5 3 1.3 4.2-.2 1-.7 2-1.3 2.8 1.3.1 2.5-.3 3.4-1 .9.4 1.8.6 3.8.6 4.1 0 7.2-3 7.2-6.6S16.100 4.500 12 4.500z" fill="#fff" />
+    <path d="M8.600 14.200V9.600l1.800 2.600 1.600-2.600v4.600M13.800 9.600l2.400 4.600m0-4.600l-2.400 4.600" stroke="#5B4BE0" strokeWidth="1.100" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+  </svg>
+);
+
 const TelegramIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.04 9.613c-.153.68-.555.847-1.124.527l-3.1-2.284-1.495 1.438c-.165.165-.305.305-.625.305l.223-3.164 5.754-5.196c.25-.223-.054-.346-.387-.123L7.04 14.748l-3.064-.957c-.666-.208-.68-.666.14-.987l11.97-4.614c.555-.2 1.04.124.877.985z"/>
@@ -180,43 +193,34 @@ function MortgageCalc() {
 }
 
 function ReviewsCarousel() {
-  const [active, setActive] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [reviewName, setReviewName] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [reviewSent, setReviewSent] = useState(false);
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    timer.current = setInterval(() => setActive(a => (a + 2) % REVIEWS.length === 0 ? 0 : (a + 1) % REVIEWS.length), 5000);
-    return () => { if (timer.current) clearInterval(timer.current); };
-  }, []);
-
-  const page = Math.floor(active / 3);
-  const totalPages = Math.ceil(REVIEWS.length / 3);
-  const visible = REVIEWS.slice(page * 3, page * 3 + 3);
+  const loop = [...REVIEWS, ...REVIEWS];
 
   return (
     <div>
-      <div className="grid md:grid-cols-3 gap-6 mb-8">
-        {visible.map((r, i) => (
-          <div key={r.name + i} className="border border-[hsl(var(--border))] rounded-lg p-7 flex flex-col gap-4 hover:shadow-md transition-shadow">
-            <div className="flex gap-0.5">{Array.from({ length: r.stars }).map((_, j) => <span key={j} className="text-amber-400 text-sm">★</span>)}</div>
-            <p className="font-body text-sm text-[hsl(var(--foreground))] leading-relaxed flex-1">«{r.text}»</p>
-            <div className="flex justify-between items-center pt-2 border-t border-[hsl(var(--border))]">
-              <p className="font-body text-sm font-medium">{r.name}</p>
-              <p className="font-body text-xs text-[hsl(var(--muted-foreground))]">{r.date}</p>
+      <style>{`
+        @keyframes reviews-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .reviews-track { animation: reviews-scroll 70s linear infinite; }
+        .reviews-viewport:hover .reviews-track { animation-play-state: paused; }
+      `}</style>
+      <div className="reviews-viewport overflow-hidden mb-8 -mx-6 px-6">
+        <div className="reviews-track flex gap-6 w-max">
+          {loop.map((r, i) => (
+            <div key={r.name + i} className="w-[320px] md:w-[380px] shrink-0 border border-[hsl(var(--border))] bg-white rounded-lg p-7 flex flex-col gap-4">
+              <div className="flex gap-0.5">{Array.from({ length: r.stars }).map((_, j) => <span key={j} className="text-amber-400 text-sm">★</span>)}</div>
+              <p className="font-body text-sm text-[hsl(var(--foreground))] leading-relaxed flex-1">«{r.text}»</p>
+              <div className="flex justify-between items-center pt-2 border-t border-[hsl(var(--border))]">
+                <p className="font-body text-sm font-medium">{r.name}</p>
+                <p className="font-body text-xs text-[hsl(var(--muted-foreground))]">{r.date}</p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <div className="flex items-center justify-between">
-        <div className="flex gap-2">
-          {Array.from({ length: totalPages }).map((_, i) => (
-            <button key={i} onClick={() => setActive(i * 3)}
-              className={`w-2 h-2 rounded-full transition-colors ${i === page ? "bg-[var(--blue)]" : "bg-[hsl(var(--border))]"}`} />
           ))}
         </div>
+      </div>
+      <div className="flex items-center justify-end">
         <button onClick={() => setShowForm(v => !v)}
           className="inline-flex items-center gap-2 px-5 py-2.5 border border-[var(--blue)] text-[var(--blue)] text-sm rounded hover:bg-[var(--blue)] hover:text-white transition-colors font-body">
           <Icon name="PenLine" size={15} /> Оставить отзыв
@@ -312,8 +316,8 @@ function LeadForm({ source = "Форма на сайте", darkMode = false }: {
         <a href={`tel:${PHONE}`} className={`flex-1 py-2.5 border text-xs rounded text-center flex items-center justify-center gap-1.5 transition-colors ${darkMode ? "border-white/10 text-white hover:border-white/30" : "border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:border-[var(--blue)]"}`}>
           <Icon name="Phone" size={13} /> Позвонить
         </a>
-        <a href={MAX_LINK} target="_blank" rel="noreferrer" className={`flex-1 py-2.5 border text-xs rounded text-center flex items-center justify-center gap-1.5 transition-colors font-semibold ${darkMode ? "border-white/10 text-white hover:border-white/30" : "border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:border-[var(--blue)]"}`}>
-          MAX
+        <a href={MAX_LINK} target="_blank" rel="noreferrer" className={`flex-1 py-2.5 border text-xs rounded text-center flex items-center justify-center gap-1.5 transition-colors ${darkMode ? "border-white/10 text-white hover:border-white/30" : "border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:border-[var(--blue)]"}`}>
+          <MaxIcon size={14} /> MAX
         </a>
         <a href={TG_LINK} target="_blank" rel="noreferrer" className={`flex-1 py-2.5 border text-xs rounded text-center flex items-center justify-center gap-1.5 transition-colors ${darkMode ? "border-white/10 text-white hover:border-white/30" : "border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:border-[var(--blue)]"}`}>
           <TelegramIcon /> Telegram
@@ -331,38 +335,39 @@ const Index = () => {
 
       {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[hsl(var(--border))] shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-          {/* Logo */}
+        <div className="w-full px-4 lg:px-6 h-16 flex items-center justify-between gap-4">
           <a href="#" className="flex items-center gap-3 shrink-0">
             <img src={ETAZHI_LOGO} alt="Этажи" className="h-7 w-auto object-contain" />
-            <div className="hidden sm:block border-l border-[hsl(var(--border))] pl-3">
+            <div className="border-l border-[hsl(var(--border))] pl-3 whitespace-nowrap">
               <p className="font-body text-xs text-[hsl(var(--muted-foreground))] leading-tight">Эксперт по недвижимости</p>
-              <p className="font-body text-xs font-semibold text-[hsl(var(--foreground))] leading-tight">Фёдоров Дмитрий</p>
+              <p className="font-body text-xs font-semibold text-[hsl(var(--foreground))] leading-tight">Агентство «Этажи»</p>
             </div>
           </a>
-          {/* Desktop nav */}
-          <div className="hidden xl:flex items-center gap-5 flex-1 justify-center">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-6 flex-1 justify-center">
             {NAV_LINKS.map(l => (
-              <a key={l.href} href={l.href} className="nav-link text-xs font-body text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors whitespace-nowrap">
+              <a key={l.href} href={l.href} className="nav-link text-[13px] xl:text-sm font-body text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors whitespace-nowrap">
                 {l.label}
               </a>
             ))}
           </div>
-          <a href={`tel:${PHONE}`} className="hidden xl:flex shrink-0 px-4 py-2 bg-[var(--blue)] text-white text-xs rounded hover:bg-[var(--blue-dark)] transition-colors items-center gap-2">
+          <a href={`tel:${PHONE}`} className="hidden lg:flex shrink-0 px-4 py-2 bg-[var(--blue)] text-white text-[13px] xl:text-sm rounded hover:bg-[var(--blue-dark)] transition-colors items-center gap-2 whitespace-nowrap">
             <Icon name="Phone" size={13} /> Позвонить
           </a>
-          <button className="xl:hidden" onClick={() => setMobileOpen(v => !v)}>
+          <button className="lg:hidden" onClick={() => setMobileOpen(v => !v)} aria-label="Меню">
             <Icon name={mobileOpen ? "X" : "Menu"} size={22} />
           </button>
         </div>
         {mobileOpen && (
-          <div className="xl:hidden bg-white border-t border-[hsl(var(--border))] px-4 py-4 flex flex-col gap-3">
+          <div className="lg:hidden bg-white border-t border-[hsl(var(--border))] px-4 py-4 flex flex-col gap-3">
             {NAV_LINKS.map(l => (
               <a key={l.href} href={l.href} onClick={() => setMobileOpen(false)} className="text-sm font-body text-[hsl(var(--foreground))]">{l.label}</a>
             ))}
             <div className="flex gap-3 pt-2">
               <a href={`tel:${PHONE}`} className="flex-1 py-2.5 bg-[var(--blue)] text-white text-sm rounded text-center flex items-center justify-center gap-2">
                 <Icon name="Phone" size={14} /> Позвонить
+              </a>
+              <a href={MAX_LINK} target="_blank" rel="noreferrer" className="flex-1 py-2.5 border border-[hsl(var(--border))] text-sm rounded text-center flex items-center justify-center gap-2">
+                <MaxIcon /> MAX
               </a>
               <a href={TG_LINK} target="_blank" rel="noreferrer" className="flex-1 py-2.5 border border-[hsl(var(--border))] text-sm rounded text-center flex items-center justify-center gap-2">
                 <TelegramIcon /> Telegram
@@ -392,8 +397,8 @@ const Index = () => {
               <a href={`tel:${PHONE}`} className="px-7 py-3.5 bg-[var(--blue)] text-white font-body text-sm rounded hover:bg-[var(--blue-dark)] transition-colors flex items-center gap-2">
                 <Icon name="Phone" size={15} /> Позвонить
               </a>
-              <a href={MAX_LINK} target="_blank" rel="noreferrer" className="px-6 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2 font-semibold">
-                MAX
+              <a href={MAX_LINK} target="_blank" rel="noreferrer" className="px-6 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2">
+                <MaxIcon /> MAX
               </a>
               <a href={TG_LINK} target="_blank" rel="noreferrer" className="px-6 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2">
                 <TelegramIcon /> Telegram
@@ -512,7 +517,7 @@ const Index = () => {
                   ["Агентство «Этажи»", "Федеральная сеть"],
                   ["Ипотека с плохой историей", "Найду решение"],
                   ["Скидки на новостройки", "Партнёрские условия"],
-                  ["Гарантийный сертификат", "на 10 000 000 рублей"],
+                  ["Гарантийный сертификат", "на\u00A010\u00A0000\u00A0000\u00A0рублей"],
                 ].map(([t, d]) => (
                   <div key={t} className="flex gap-3 items-start">
                     <div className="w-5 h-5 rounded-full bg-[var(--blue-light)] flex items-center justify-center mt-0.5 shrink-0">
@@ -580,7 +585,6 @@ const Index = () => {
           <div className="mb-14">
             <p className="text-xs uppercase tracking-[0.2em] text-[var(--blue)] font-body mb-3">Клиенты о работе</p>
             <h2 className="font-display text-5xl font-light">Отзывы</h2>
-            <p className="font-body text-[hsl(var(--muted-foreground))] mt-3 text-sm">Скриншоты из Telegram и MAX — по запросу.</p>
           </div>
           <ReviewsCarousel />
         </div>
@@ -631,8 +635,8 @@ const Index = () => {
                   </div>
                 </a>
                 <a href={MAX_LINK} target="_blank" rel="noreferrer" className="flex items-center gap-4 group">
-                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-white group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors font-bold text-xs">
-                    MAX
+                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-white group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors">
+                    <MaxIcon size={20} />
                   </div>
                   <div>
                     <p className="font-body text-white text-sm font-medium">MAX</p>
@@ -657,6 +661,15 @@ const Index = () => {
                     <p className="font-body text-gray-500 text-xs">Электронная почта</p>
                   </div>
                 </a>
+                <a href="https://yar.etagi.com" target="_blank" rel="noreferrer" className="flex items-center gap-4 group">
+                  <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-white group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors">
+                    <Icon name="Globe" size={18} />
+                  </div>
+                  <div>
+                    <p className="font-body text-white text-sm font-medium">yar.etagi.com</p>
+                    <p className="font-body text-gray-500 text-xs">Сайт компании «Этажи»</p>
+                  </div>
+                </a>
               </div>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-lg p-8">
@@ -673,7 +686,6 @@ const Index = () => {
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-10 mb-8">
             <div>
-              <img src={ETAZHI_LOGO} alt="Этажи" className="h-8 w-auto object-contain mb-4 brightness-0 invert opacity-60" />
               <p className="font-body text-white/80 text-sm font-medium mb-1">Фёдоров Дмитрий</p>
               <p className="font-body text-gray-500 text-xs leading-relaxed">Ваш специалист в сфере недвижимости.<br/>Партнёр федеральной сети «Этажи».</p>
               <p className="font-body text-gray-600 text-xs mt-3">Скоро: Telegram-канал «Недвижимость без рисков»</p>
@@ -692,7 +704,7 @@ const Index = () => {
                   <Icon name="Mail" size={14} className="shrink-0 text-[var(--blue)]" /> 89161022727@mail.ru
                 </a>
                 <a href="https://yar.etagi.com" target="_blank" rel="noreferrer" className="font-body text-gray-400 text-sm flex items-center gap-2 hover:text-white transition-colors">
-                  <Icon name="Globe" size={14} className="shrink-0 text-[var(--blue)]" /> yar.etagi.com
+                  <Icon name="Globe" size={14} className="shrink-0 text-[var(--blue)]" /> yar.etagi.com (сайт компании «Этажи»)
                 </a>
               </div>
             </div>
