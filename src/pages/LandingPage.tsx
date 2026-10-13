@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import ContactModals, { PHONE, PHONE_DISPLAY, TG_LINK, MAX_LINK, onPhoneClick } from "@/components/ContactModals";
 import LeadForm from "@/components/LeadForm";
+import ShareButton from "@/components/ShareButton";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { LANDINGS, getLanding } from "@/data/landings";
 import NotFound from "./NotFound";
@@ -28,6 +29,7 @@ const LandingPage = () => {
     setMeta('meta[property="og:title"]', "content", page.title);
     setMeta('meta[property="og:description"]', "content", page.description);
 
+    document.getElementById("prerender-ld")?.remove();
     const ld = document.createElement("script");
     ld.type = "application/ld+json";
     ld.id = "landing-ld";
@@ -97,6 +99,7 @@ const LandingPage = () => {
                 <a href={TG_LINK} target="_blank" rel="noreferrer" className="px-5 py-3.5 border border-white/40 text-white font-body text-sm rounded hover:bg-white hover:text-[hsl(var(--foreground))] transition-colors flex items-center gap-2">
                   <Icon name="Send" size={15} /> Telegram
                 </a>
+                <ShareButton className="px-5 py-3.5 border border-white/40 text-white font-body text-sm rounded hover:bg-white hover:text-[hsl(var(--foreground))] transition-colors flex items-center gap-2" />
               </div>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-lg p-7">

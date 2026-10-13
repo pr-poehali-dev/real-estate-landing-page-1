@@ -2,6 +2,44 @@ import {defineConfig} from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import {componentTagger} from "pp-tagger";
+import fs from "fs";
+import {LANDINGS} from "./src/data/landings";
+
+const SITE = "https://rieltor-yaroslavl.ru";
+const esc = (v: string) => v.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+
+const prerenderLandings = {
+    name: "prerender-landings",
+    apply: "build" as const,
+    closeBundle() {
+        const dist = path.resolve(__dirname, "dist");
+        const tplPath = path.join(dist, "index.html");
+        if (!fs.existsSync(tplPath)) return;
+        const tpl = fs.readFileSync(tplPath, "utf-8");
+        for (const l of LANDINGS) {
+            const url = `${SITE}/${l.slug}`;
+            const ld = JSON.stringify([
+                {"@context": "https://schema.org", "@type": "Service", name: l.h1, description: l.description, url, areaServed: "Ярославская область",
+                    provider: {"@type": "RealEstateAgent", name: "Фёдоров Дмитрий", telephone: "+7-916-102-27-27"}},
+                {"@context": "https://schema.org", "@type": "FAQPage", mainEntity: l.faq.map(f => ({"@type": "Question", name: f.q, acceptedAnswer: {"@type": "Answer", text: f.a}}))},
+            ]).replace(/</g, "\\u003c");
+            let html = tpl
+                .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(l.title)}</title>`)
+                .replace(/<meta name="description" content="[^"]*"\/?>/, `<meta name="description" content="${esc(l.description)}"/>`)
+                .replace(/<link rel="canonical" href="[^"]*"\/?>/, `<link rel="canonical" href="${url}"/>`)
+                .replace(/<meta property="og:url" content="[^"]*"\/?>/, `<meta property="og:url" content="${url}"/>`)
+                .replace(/<meta property="og:title" content="[^"]*"\/?>/, `<meta property="og:title" content="${esc(l.title)}"/>`)
+                .replace(/<meta property="og:description" content="[^"]*"\/?>/, `<meta property="og:description" content="${esc(l.description)}"/>`)
+                .replace(/<meta name="twitter:title" content="[^"]*"\/?>/, `<meta name="twitter:title" content="${esc(l.title)}"/>`)
+                .replace(/<meta name="twitter:description" content="[^"]*"\/?>/, `<meta name="twitter:description" content="${esc(l.description)}"/>`);
+            html = html.replace("</head>", `<script type="application/ld+json" id="prerender-ld">${ld}</script>\n</head>`);
+            html = html.replace('<div id="root"></div>', `<div id="root"><h1>${esc(l.h1)}</h1><p>${esc(l.lead)}</p></div>`);
+            const dir = path.join(dist, l.slug);
+            fs.mkdirSync(dir, {recursive: true});
+            fs.writeFileSync(path.join(dir, "index.html"), html);
+        }
+    },
+};
 
 // HMR-сокет превью рвёт инфраструктура: ingress-nginx на каждом reload
 // конфига (захват/освобождение любого dev-пода) через 30 с закрывает все
@@ -105,6 +143,7 @@ export default defineConfig(({mode}) => ({
     plugins: [
         react(),
         hmrKeepalive,
+        prerenderLandings,
         mode === 'development' &&
         componentTagger(),
     ].filter(Boolean),
