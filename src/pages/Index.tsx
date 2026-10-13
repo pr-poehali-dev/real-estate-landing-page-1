@@ -1,15 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Icon from "@/components/ui/icon";
+import ContactModals, { PHONE, PHONE_DISPLAY, TG_LINK, MAX_LINK, onPhoneClick, openContactModal } from "@/components/ContactModals";
 
 const AGENT_PHOTO = "/agent.jpg";
 const BONUS_PHOTO = "/bonus.jpg";
 const HERO_PHOTO = "/hero.jpg";
-const LEAD_URL = "https://functions.poehali.dev/8bf16f0b-bdf9-4126-94f3-a7db6c034ea0";
+const LEAD_URL = "https://functions.poehali.dev/909c7aec-190d-4922-9a3d-cdb7250eac12";
+const REVIEWS_URL = "https://functions.poehali.dev/b82c2320-1454-44af-b158-49b8e3ca37df";
 
-const PHONE = "+79161022727";
-const PHONE_DISPLAY = "+7-916-102-27-27";
-const TG_LINK = "https://t.me/+79161022727";
-const MAX_LINK = "https://max.ru/im?phone=79161022727";
 
 const NAV_LINKS = [
   { label: "Услуги", href: "#services" },
@@ -173,7 +171,7 @@ function MortgageCalc() {
           <p className="text-xs text-[hsl(var(--muted-foreground))] leading-relaxed mb-3">
             Все заявки подаются ипотечным брокером напрямую в банки-партнёры. Сотрудничаем со всеми ведущими банками России.
           </p>
-          <a href={`tel:${PHONE}`} className="flex items-center justify-center gap-2 py-3 border border-[var(--blue)] text-[var(--blue)] text-sm rounded hover:bg-[var(--blue)] hover:text-white transition-colors font-body">
+          <a href={`tel:${PHONE}`} onClick={onPhoneClick} className="flex items-center justify-center gap-2 py-3 border border-[var(--blue)] text-[var(--blue)] text-sm rounded hover:bg-[var(--blue)] hover:text-white transition-colors font-body">
             <Icon name="Phone" size={16} /> Обсудить ипотеку
           </a>
         </div>
@@ -187,7 +185,14 @@ function ReviewsCarousel() {
   const [reviewName, setReviewName] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [reviewSent, setReviewSent] = useState(false);
-  const loop = [...REVIEWS, ...REVIEWS];
+  const [extra, setExtra] = useState<typeof REVIEWS>([]);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    fetch(REVIEWS_URL).then(r => r.json()).then(d => setExtra(d.reviews || [])).catch(() => {});
+  }, []);
+  const all = [...extra, ...REVIEWS];
+  const loop = [...all, ...all];
 
   return (
     <div>
@@ -224,20 +229,26 @@ function ReviewsCarousel() {
               className="w-full border border-[hsl(var(--border))] rounded px-4 py-3 text-sm font-body focus:outline-none focus:border-[var(--blue)] transition-colors" />
             <textarea value={reviewText} onChange={e => setReviewText(e.target.value)} placeholder="Расскажите о вашем опыте работы с Дмитрием..." rows={4}
               className="w-full border border-[hsl(var(--border))] rounded px-4 py-3 text-sm font-body focus:outline-none focus:border-[var(--blue)] transition-colors resize-none" />
-            <button onClick={async () => {
-              if (!reviewName || !reviewText) return;
-              await fetch(LEAD_URL, { method: "POST", headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: reviewName, phone: "—", message: `ОТЗЫВ: ${reviewText}`, source: "Форма отзыва" }) });
-              setReviewSent(true);
-            }} className="px-6 py-2.5 bg-[var(--blue)] text-white text-sm rounded hover:bg-[var(--blue-dark)] transition-colors font-body">
-              Отправить отзыв
+            <button disabled={sending} onClick={async () => {
+              if (!reviewName.trim() || !reviewText.trim()) return;
+              setSending(true); setError(false);
+              try {
+                const r = await fetch(REVIEWS_URL, { method: "POST", headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ name: reviewName, text: reviewText }) });
+                if (!r.ok) throw new Error();
+                setExtra(prev => [{ name: reviewName, text: reviewText, stars: 5, date: "Только что" }, ...prev]);
+                setReviewSent(true);
+              } catch { setError(true); } finally { setSending(false); }
+            }} className="px-6 py-2.5 bg-[var(--blue)] text-white text-sm rounded hover:bg-[var(--blue-dark)] transition-colors font-body disabled:opacity-60">
+              {sending ? "Отправляем..." : "Отправить отзыв"}
             </button>
+            {error && <p className="font-body text-sm text-red-600">Не удалось отправить отзыв. Попробуйте ещё раз.</p>}
           </div>
         </div>
       )}
       {reviewSent && (
         <div className="mt-6 border border-[var(--blue)] rounded-lg p-6 bg-[var(--blue-light)] text-center">
-          <p className="font-body text-sm text-[var(--blue)]">Спасибо за отзыв! Дмитрий свяжется с вами для подтверждения.</p>
+          <p className="font-body text-sm text-[var(--blue)]">Спасибо за отзыв! Он уже появился в списке.</p>
         </div>
       )}
     </div>
@@ -303,7 +314,7 @@ function LeadForm({ source = "Форма на сайте", darkMode = false }: {
         Или свяжитесь напрямую:
       </p>
       <div className="flex gap-3">
-        <a href={`tel:${PHONE}`} className={`flex-1 py-2.5 border text-xs rounded text-center flex items-center justify-center gap-1.5 transition-colors ${darkMode ? "border-white/10 text-white hover:border-white/30" : "border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:border-[var(--blue)]"}`}>
+        <a href={`tel:${PHONE}`} onClick={onPhoneClick} className={`flex-1 py-2.5 border text-xs rounded text-center flex items-center justify-center gap-1.5 transition-colors ${darkMode ? "border-white/10 text-white hover:border-white/30" : "border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:border-[var(--blue)]"}`}>
           <Icon name="Phone" size={13} /> Позвонить
         </a>
         <a href={MAX_LINK} target="_blank" rel="noreferrer" className={`flex-1 py-2.5 border text-xs rounded text-center flex items-center justify-center gap-1.5 transition-colors ${darkMode ? "border-white/10 text-white hover:border-white/30" : "border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:border-[var(--blue)]"}`}>
@@ -322,6 +333,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
+      <ContactModals />
 
       {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[hsl(var(--border))] shadow-sm">
@@ -339,7 +351,7 @@ const Index = () => {
               </a>
             ))}
           </div>
-          <a href={`tel:${PHONE}`} className="hidden lg:flex shrink-0 px-4 py-2 bg-[var(--blue)] text-white text-[13px] xl:text-sm rounded hover:bg-[var(--blue-dark)] transition-colors items-center gap-2 whitespace-nowrap">
+          <a href={`tel:${PHONE}`} onClick={onPhoneClick} className="hidden lg:flex shrink-0 px-4 py-2 bg-[var(--blue)] text-white text-[13px] xl:text-sm rounded hover:bg-[var(--blue-dark)] transition-colors items-center gap-2 whitespace-nowrap">
             <Icon name="Phone" size={13} /> Позвонить
           </a>
           <button className="lg:hidden" onClick={() => setMobileOpen(v => !v)} aria-label="Меню">
@@ -352,7 +364,7 @@ const Index = () => {
               <a key={l.href} href={l.href} onClick={() => setMobileOpen(false)} className="text-sm font-body text-[hsl(var(--foreground))]">{l.label}</a>
             ))}
             <div className="flex gap-3 pt-2">
-              <a href={`tel:${PHONE}`} className="flex-1 py-2.5 bg-[var(--blue)] text-white text-sm rounded text-center flex items-center justify-center gap-2">
+              <a href={`tel:${PHONE}`} onClick={onPhoneClick} className="flex-1 py-2.5 bg-[var(--blue)] text-white text-sm rounded text-center flex items-center justify-center gap-2">
                 <Icon name="Phone" size={14} /> Позвонить
               </a>
               <a href={MAX_LINK} target="_blank" rel="noreferrer" className="flex-1 py-2.5 border border-[hsl(var(--border))] text-sm rounded text-center flex items-center justify-center gap-2">
@@ -378,14 +390,14 @@ const Index = () => {
             <h1 className="animate-fade-up-delay-1 font-display text-6xl md:text-7xl font-light leading-[1.05] mb-5 text-white">
               Фёдоров<br/><span className="text-blue-300">Дмитрий</span>
             </h1>
-            <a href={`tel:${PHONE}`} className="animate-fade-up-delay-1 inline-flex items-center gap-2 font-body text-base text-white/80 hover:text-white transition-colors mb-5 w-fit">
+            <a href={`tel:${PHONE}`} onClick={onPhoneClick} className="animate-fade-up-delay-1 inline-flex items-center gap-2 font-body text-base text-white/80 hover:text-white transition-colors mb-5 w-fit">
               <Icon name="Phone" size={16} />{PHONE_DISPLAY}
             </a>
             <p className="animate-fade-up-delay-2 font-body text-base text-white/80 leading-relaxed mb-8 max-w-sm">
               Решаю нестандартные задачи. Одобряю ипотеку с плохой кредитной историей. Продажа новостроек со скидкой.
             </p>
             <div className="animate-fade-up-delay-3 flex flex-wrap gap-3">
-              <a href={`tel:${PHONE}`} className="px-7 py-3.5 bg-[var(--blue)] text-white font-body text-sm rounded hover:bg-[var(--blue-dark)] transition-colors flex items-center gap-2">
+              <a href={`tel:${PHONE}`} onClick={onPhoneClick} className="px-7 py-3.5 bg-[var(--blue)] text-white font-body text-sm rounded hover:bg-[var(--blue-dark)] transition-colors flex items-center gap-2">
                 <Icon name="Phone" size={15} /> Позвонить
               </a>
               <a href={MAX_LINK} target="_blank" rel="noreferrer" className="px-6 py-3.5 border border-white/40 text-white font-body text-sm rounded hover:bg-white hover:text-[hsl(var(--foreground))] transition-colors flex items-center gap-2">
@@ -559,9 +571,9 @@ const Index = () => {
                 </div>
               ))}
             </div>
-            <a href={TG_LINK} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 w-full py-3.5 bg-[var(--blue)] text-white text-sm font-body rounded hover:bg-[var(--blue-dark)] transition-colors">
-              <TelegramIcon /> Написать Дмитрию — участвую!
-            </a>
+            <button onClick={() => openContactModal("messengers")} className="flex items-center justify-center gap-2 w-full py-3.5 bg-[var(--blue)] text-white text-sm font-body rounded hover:bg-[var(--blue-dark)] transition-colors">
+              <Icon name="MessageCircle" size={16} /> Написать Дмитрию — участвую!
+            </button>
           </div>
         </div>
       </section>
@@ -612,7 +624,7 @@ const Index = () => {
                 Я позвоню в ближайшее время, чтобы предложить решение. Даже если до этого вам везде отказывали.
               </p>
               <div className="space-y-4 mb-8">
-                <a href={`tel:${PHONE}`} className="flex items-center gap-4 group">
+                <a href={`tel:${PHONE}`} onClick={onPhoneClick} className="flex items-center gap-4 group">
                   <div className="w-11 h-11 rounded border border-white/10 flex items-center justify-center text-white group-hover:bg-[var(--blue)] group-hover:border-[var(--blue)] transition-colors">
                     <Icon name="Phone" size={18} />
                   </div>
@@ -675,7 +687,7 @@ const Index = () => {
                   <Icon name="MapPin" size={14} className="mt-0.5 shrink-0 text-[var(--blue)]" />
                   г. Ярославль, ул. Победы, 37 (этаж 1)
                 </p>
-                <a href={`tel:${PHONE}`} className="font-body text-gray-400 text-sm flex items-center gap-2 hover:text-white transition-colors">
+                <a href={`tel:${PHONE}`} onClick={onPhoneClick} className="font-body text-gray-400 text-sm flex items-center gap-2 hover:text-white transition-colors">
                   <Icon name="Phone" size={14} className="shrink-0 text-[var(--blue)]" /> {PHONE_DISPLAY}
                 </a>
                 <a href="mailto:89161022727@mail.ru" className="font-body text-gray-400 text-sm flex items-center gap-2 hover:text-white transition-colors">
