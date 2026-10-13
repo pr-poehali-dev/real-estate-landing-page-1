@@ -39,16 +39,18 @@ def handler(event: dict, context) -> dict:
         body = json.loads(event.get("body") or "{}")
         name = body.get("name", "").strip()[:100]
         text = body.get("text", "").strip()[:2000]
+        stars = int(body.get("stars") or 5)
+        stars = min(max(stars, 1), 5)
         if not name or not text:
             conn.close()
             return {"statusCode": 400, "headers": cors, "body": json.dumps({"error": "Имя и отзыв обязательны"})}
         cur.execute(
-            "INSERT INTO reviews (name, text, stars) VALUES (%s, %s, 5)",
-            (name, text),
+            "INSERT INTO reviews (name, text, stars) VALUES (%s, %s, %s)",
+            (name, text, stars),
         )
         conn.commit()
         conn.close()
-        notify_max(f"Новый отзыв на сайте\n\nОт: {name}\n{text}")
+        notify_max(f"Новый отзыв на сайте\n\nОт: {name}\nОценка: {stars} из 5\n{text}")
         return {"statusCode": 200, "headers": cors, "body": json.dumps({"ok": True})}
 
     cur.execute("SELECT name, text, stars, created_at FROM reviews WHERE is_published ORDER BY created_at DESC LIMIT 50")

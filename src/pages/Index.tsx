@@ -184,6 +184,8 @@ function ReviewsCarousel() {
   const [showForm, setShowForm] = useState(false);
   const [reviewName, setReviewName] = useState("");
   const [reviewText, setReviewText] = useState("");
+  const [reviewStars, setReviewStars] = useState(0);
+  const [hoverStars, setHoverStars] = useState(0);
   const [reviewSent, setReviewSent] = useState(false);
   const [extra, setExtra] = useState<typeof REVIEWS>([]);
   const [sending, setSending] = useState(false);
@@ -227,22 +229,32 @@ function ReviewsCarousel() {
           <div className="space-y-3">
             <input value={reviewName} onChange={e => setReviewName(e.target.value)} placeholder="Ваше имя"
               className="w-full border border-[hsl(var(--border))] rounded px-4 py-3 text-sm font-body focus:outline-none focus:border-[var(--blue)] transition-colors" />
+            <div>
+              <p className="font-body text-xs uppercase tracking-wider text-[hsl(var(--muted-foreground))] mb-2">Ваша оценка</p>
+              <div className="flex gap-1" onMouseLeave={() => setHoverStars(0)}>
+                {[1, 2, 3, 4, 5].map(n => (
+                  <button key={n} type="button" aria-label={`${n} из 5`} onClick={() => setReviewStars(n)} onMouseEnter={() => setHoverStars(n)}
+                    className={`text-3xl leading-none transition-colors ${n <= (hoverStars || reviewStars) ? "text-amber-400" : "text-gray-300"}`}>★</button>
+                ))}
+              </div>
+            </div>
             <textarea value={reviewText} onChange={e => setReviewText(e.target.value)} placeholder="Расскажите о вашем опыте работы с Дмитрием..." rows={4}
               className="w-full border border-[hsl(var(--border))] rounded px-4 py-3 text-sm font-body focus:outline-none focus:border-[var(--blue)] transition-colors resize-none" />
             <button disabled={sending} onClick={async () => {
               if (!reviewName.trim() || !reviewText.trim()) return;
+              if (!reviewStars) { setError(true); return; }
               setSending(true); setError(false);
               try {
                 const r = await fetch(REVIEWS_URL, { method: "POST", headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ name: reviewName, text: reviewText }) });
+                  body: JSON.stringify({ name: reviewName, text: reviewText, stars: reviewStars }) });
                 if (!r.ok) throw new Error();
-                setExtra(prev => [{ name: reviewName, text: reviewText, stars: 5, date: "Только что" }, ...prev]);
+                setExtra(prev => [{ name: reviewName, text: reviewText, stars: reviewStars, date: "Только что" }, ...prev]);
                 setReviewSent(true);
               } catch { setError(true); } finally { setSending(false); }
             }} className="px-6 py-2.5 bg-[var(--blue)] text-white text-sm rounded hover:bg-[var(--blue-dark)] transition-colors font-body disabled:opacity-60">
               {sending ? "Отправляем..." : "Отправить отзыв"}
             </button>
-            {error && <p className="font-body text-sm text-red-600">Не удалось отправить отзыв. Попробуйте ещё раз.</p>}
+            {error && <p className="font-body text-sm text-red-600">{reviewStars ? "Не удалось отправить отзыв. Попробуйте ещё раз." : "Пожалуйста, поставьте оценку."}</p>}
           </div>
         </div>
       )}
