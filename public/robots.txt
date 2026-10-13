@@ -15,3 +15,6 @@ Allow: /
 
 User-agent: Yandex
 Allow: /
+
+Host: https://rieltor-yaroslavl.ru
+Sitemap: https://rieltor-yaroslavl.ru/sitemap.xml
