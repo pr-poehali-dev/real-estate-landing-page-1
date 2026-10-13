@@ -368,35 +368,33 @@ const Index = () => {
 
       {/* HERO */}
       <section id="hero" className="pt-16 min-h-screen flex flex-col">
-        <div className="flex-1 grid md:grid-cols-[1fr_420px] lg:grid-cols-[1fr_500px]">
-          <div className="flex flex-col justify-center px-8 md:px-16 py-20 bg-white">
-            <p className="animate-fade-up text-xs uppercase tracking-[0.2em] text-[var(--blue)] font-body mb-5">
+        <div className="flex-1 relative overflow-hidden flex">
+          <img src={HERO_PHOTO} alt="Передача ключей от квартиры" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: "70% center" }} />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(11,27,51,0.92) 0%, rgba(11,27,51,0.75) 40%, rgba(11,27,51,0.2) 75%, rgba(11,27,51,0) 100%)" }} />
+          <div className="relative flex flex-col justify-center px-8 md:px-16 lg:px-24 py-20 w-full max-w-3xl">
+            <p className="animate-fade-up text-xs uppercase tracking-[0.2em] text-blue-300 font-body mb-5">
               Ярославль · Россия · Турция · ОАЭ
             </p>
-            <h1 className="animate-fade-up-delay-1 font-display text-6xl md:text-7xl font-light leading-[1.05] mb-5 text-[hsl(var(--foreground))]">
-              Фёдоров<br/><span className="text-[var(--blue)]">Дмитрий</span>
+            <h1 className="animate-fade-up-delay-1 font-display text-6xl md:text-7xl font-light leading-[1.05] mb-5 text-white">
+              Фёдоров<br/><span className="text-blue-300">Дмитрий</span>
             </h1>
-            <a href={`tel:${PHONE}`} className="animate-fade-up-delay-1 inline-flex items-center gap-2 font-body text-base text-[hsl(var(--muted-foreground))] hover:text-[var(--blue)] transition-colors mb-5 w-fit">
+            <a href={`tel:${PHONE}`} className="animate-fade-up-delay-1 inline-flex items-center gap-2 font-body text-base text-white/80 hover:text-white transition-colors mb-5 w-fit">
               <Icon name="Phone" size={16} />{PHONE_DISPLAY}
             </a>
-            <p className="animate-fade-up-delay-2 font-body text-base text-[hsl(var(--muted-foreground))] leading-relaxed mb-8 max-w-sm">
+            <p className="animate-fade-up-delay-2 font-body text-base text-white/80 leading-relaxed mb-8 max-w-sm">
               Решаю нестандартные задачи. Одобряю ипотеку с плохой кредитной историей. Продажа новостроек со скидкой.
             </p>
             <div className="animate-fade-up-delay-3 flex flex-wrap gap-3">
               <a href={`tel:${PHONE}`} className="px-7 py-3.5 bg-[var(--blue)] text-white font-body text-sm rounded hover:bg-[var(--blue-dark)] transition-colors flex items-center gap-2">
                 <Icon name="Phone" size={15} /> Позвонить
               </a>
-              <a href={MAX_LINK} target="_blank" rel="noreferrer" className="px-6 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2">
+              <a href={MAX_LINK} target="_blank" rel="noreferrer" className="px-6 py-3.5 border border-white/40 text-white font-body text-sm rounded hover:bg-white hover:text-[hsl(var(--foreground))] transition-colors flex items-center gap-2">
                 <MaxIcon /> MAX
               </a>
-              <a href={TG_LINK} target="_blank" rel="noreferrer" className="px-6 py-3.5 border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-body text-sm rounded hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors flex items-center gap-2">
+              <a href={TG_LINK} target="_blank" rel="noreferrer" className="px-6 py-3.5 border border-white/40 text-white font-body text-sm rounded hover:bg-white hover:text-[hsl(var(--foreground))] transition-colors flex items-center gap-2">
                 <TelegramIcon /> Telegram
               </a>
             </div>
-          </div>
-          <div className="relative hidden md:flex items-end bg-[var(--blue-light)] overflow-hidden">
-            <img src={HERO_PHOTO} alt="Передача ключей от квартиры" className="w-full object-cover"
-              style={{ height: "calc(100vh - 64px)", objectPosition: "55% center" }} />
           </div>
         </div>
         <div className="bg-white border-t border-[hsl(var(--border))]">
