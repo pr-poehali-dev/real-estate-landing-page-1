@@ -699,7 +699,7 @@ const Index = () => {
             <div>
               <p className="font-body text-white/80 text-sm font-medium mb-1">Фёдоров Дмитрий</p>
               <p className="font-body text-gray-500 text-xs leading-relaxed">Ваш специалист в сфере недвижимости.</p>
-              <p className="font-body text-gray-600 text-xs mt-3">Скоро: Telegram-канал «Недвижимость без рисков»</p>
+              <p className="font-body text-gray-600 text-xs mt-3">Скоро: Telegram-канал «Всё PRO-Недвижимость»</p>
             </div>
             <div>
               <p className="font-body text-white/60 text-xs uppercase tracking-wider mb-4">Контакты</p>
