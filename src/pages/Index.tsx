@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 
-const AGENT_PHOTO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a909-12537f4a91a8/bucket/acfe706d-f06a-4908-b4b6-034beafcc847.jpg";
-const BONUS_PHOTO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a909-12537f4a91a8/bucket/a340a49d-96fa-4e86-8b04-222d33083986.jpg";
+const AGENT_PHOTO = "/agent.jpg";
+const BONUS_PHOTO = "/bonus.jpg";
 const ETAZHI_LOGO = "https://cdn.poehali.dev/projects/f54bcda6-20cc-4cba-a909-12537f4a91a8/bucket/e45f4859-3e09-4caa-83da-8d1a09cab0d9.jpg";
 const LEAD_URL = "https://functions.poehali.dev/8bf16f0b-bdf9-4126-94f3-a7db6c034ea0";
 
