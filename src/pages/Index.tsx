@@ -101,17 +101,7 @@ function formatMoney(n: number) {
 }
 
 const MaxIcon = ({ size = 16 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
-    <defs>
-      <linearGradient id="maxGrad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stopColor="#2AABEE" />
-        <stop offset="1" stopColor="#7B3FE4" />
-      </linearGradient>
-    </defs>
-    <rect width="24" height="24" rx="7" fill="url(#maxGrad)" />
-    <path d="M12 4.5c-4.1 0-7.2 3-7.2 7 0 1.6.5 3 1.3 4.2-.2 1-.7 2-1.3 2.8 1.3.1 2.5-.3 3.4-1 .9.4 1.8.6 3.8.6 4.1 0 7.2-3 7.2-6.6S16.100 4.500 12 4.500z" fill="#fff" />
-    <path d="M8.600 14.200V9.600l1.800 2.600 1.600-2.600v4.600M13.800 9.600l2.400 4.600m0-4.600l-2.400 4.600" stroke="#5B4BE0" strokeWidth="1.100" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-  </svg>
+  <img src="/max-logo.png" alt="MAX" width={size} height={size} className="rounded-[22%]" />
 );
 
 const TelegramIcon = () => (
