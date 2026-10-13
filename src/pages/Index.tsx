@@ -1,5 +1,7 @@
 import ContactModals from "@/components/ContactModals";
 import HeroHeader from "@/components/home/HeroHeader";
+import AboutSection from "@/components/home/AboutSection";
+import ProblemsSection from "@/components/home/ProblemsSection";
 import ServicesBlock from "@/components/home/ServicesBlock";
 import TrustBlock from "@/components/home/TrustBlock";
 import ContactsFooter from "@/components/home/ContactsFooter";
@@ -11,7 +13,11 @@ const Index = () => {
 
       <HeroHeader />
 
+      <AboutSection />
+
       <ServicesBlock />
+
+      <ProblemsSection />
 
       <TrustBlock />
 
