@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Icon from "@/components/ui/icon";
+import SeoFaq from "@/components/SeoFaq";
 import ContactModals, { PHONE, PHONE_DISPLAY, TG_LINK, MAX_LINK, onPhoneClick, openContactModal } from "@/components/ContactModals";
 
 const AGENT_PHOTO = "/agent.jpg";
@@ -400,7 +401,7 @@ const Index = () => {
               Ярославль · Россия · Турция · ОАЭ
             </p>
             <h1 className="animate-fade-up-delay-1 font-display text-6xl md:text-7xl font-light leading-[1.05] mb-5 text-white">
-              Фёдоров<br/><span className="text-blue-300">Дмитрий</span>
+              <span className="sr-only">Риэлтор в Ярославле: </span>Фёдоров<br/><span className="text-blue-300">Дмитрий</span>
             </h1>
             <a href={`tel:${PHONE}`} onClick={onPhoneClick} className="animate-fade-up-delay-1 inline-flex items-center gap-2 font-body text-base text-white/80 hover:text-white transition-colors mb-5 w-fit">
               <Icon name="Phone" size={16} />{PHONE_DISPLAY}
@@ -459,7 +460,7 @@ const Index = () => {
       <section id="services" className="py-24 max-w-6xl mx-auto px-6">
         <div className="mb-14">
           <p className="text-xs uppercase tracking-[0.2em] text-[var(--blue)] font-body mb-3">Что я делаю</p>
-          <h2 className="font-display text-5xl font-light">Мои услуги</h2>
+          <h2 className="font-display text-5xl font-light">Услуги риэлтора в Ярославле</h2>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {SERVICES.map((s) => (
@@ -479,7 +480,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto px-6">
           <div className="mb-14">
             <p className="text-xs uppercase tracking-[0.2em] text-[var(--blue)] font-body mb-3">Планирование</p>
-            <h2 className="font-display text-5xl font-light">Калькулятор ипотеки</h2>
+            <h2 className="font-display text-5xl font-light">Ипотечный калькулятор Ярославль</h2>
             <p className="font-body text-[hsl(var(--muted-foreground))] mt-3 max-w-lg">
               Рассчитайте платёж прямо сейчас. Даже если история испорчена — найдём банк, который одобрит.
             </p>
@@ -492,7 +493,7 @@ const Index = () => {
       <section id="geography" className="py-24 max-w-6xl mx-auto px-6">
         <div className="mb-14">
           <p className="text-xs uppercase tracking-[0.2em] text-[var(--blue)] font-body mb-3">Где работаю</p>
-          <h2 className="font-display text-5xl font-light">География</h2>
+          <h2 className="font-display text-5xl font-light">Недвижимость в Ярославле и Ярославской области</h2>
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {GEO_ITEMS.map((g) => (
@@ -504,6 +505,12 @@ const Index = () => {
               <p className="font-body text-sm text-[hsl(var(--muted-foreground))] leading-relaxed">{g.desc}</p>
             </div>
           ))}
+        </div>
+        <div className="mt-10 border border-[hsl(var(--border))] rounded-lg p-7">
+          <h3 className="font-display text-xl font-semibold mb-3">Районы Ярославля и города области, где помогаю с недвижимостью</h3>
+          <p className="font-body text-sm text-[hsl(var(--muted-foreground))] leading-relaxed">
+            Ярославль: Дзержинский, Фрунзенский, Заволжский, Красноперекопский, Кировский и Ленинский районы. Ярославская область: Рыбинск, Тутаев, Переславль-Залесский, Ростов, Углич, Гаврилов-Ям, Данилов, Мышкин, Любим. Купить квартиру в новостройке, продать вторичное жильё, оформить ипотеку, найти дом или участок.
+          </p>
         </div>
       </section>
 
@@ -595,11 +602,13 @@ const Index = () => {
         <div className="max-w-6xl mx-auto px-6">
           <div className="mb-14">
             <p className="text-xs uppercase tracking-[0.2em] text-[var(--blue)] font-body mb-3">Клиенты о работе</p>
-            <h2 className="font-display text-5xl font-light">Отзывы</h2>
+            <h2 className="font-display text-5xl font-light">Отзывы клиентов о риэлторе в Ярославле</h2>
           </div>
           <ReviewsCarousel />
         </div>
       </section>
+
+      <SeoFaq />
 
       {/* NEWS */}
       <section id="news" className="py-24 max-w-6xl mx-auto px-6">
