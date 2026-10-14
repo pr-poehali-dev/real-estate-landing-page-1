@@ -10,7 +10,7 @@ export default function AboutSection() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div className="relative">
-            <img src={AGENT_PHOTO} alt="Фёдоров Дмитрий — риэлтор Ярославль" className="w-full max-w-sm mx-auto rounded-lg object-cover aspect-[3/4]" />
+            <img src={AGENT_PHOTO} alt="Фёдоров Дмитрий — риэлтор Ярославль" width={1000} height={1000} loading="lazy" className="w-full max-w-sm mx-auto rounded-lg object-cover aspect-[3/4]" />
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-[var(--blue)] font-body mb-3">Кто я</p>

@@ -118,7 +118,7 @@ export default function TrustBlock() {
       </div>
       <div className="grid md:grid-cols-2 gap-12 items-start">
         <div>
-          <img src={BONUS_PHOTO} alt="Партнёрская программа Фёдоров Дмитрий" className="w-full rounded-lg object-cover shadow-md" />
+          <img src={BONUS_PHOTO} alt="Партнёрская программа Фёдоров Дмитрий" width={1300} height={743} loading="lazy" className="w-full rounded-lg object-cover shadow-md" />
         </div>
         <div className="space-y-5">
           <div className="bg-[var(--blue-light)] border border-[var(--blue)]/20 rounded-lg p-6">

@@ -21,6 +21,10 @@ const prerenderLandings = {
                 {"@context": "https://schema.org", "@type": "Service", name: l.h1, description: l.description, url, areaServed: "Ярославская область",
                     provider: {"@type": "RealEstateAgent", name: "Фёдоров Дмитрий", telephone: "+7-916-102-27-27"}},
                 {"@context": "https://schema.org", "@type": "FAQPage", mainEntity: l.faq.map(f => ({"@type": "Question", name: f.q, acceptedAnswer: {"@type": "Answer", text: f.a}}))},
+                {"@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+                    {"@type": "ListItem", position: 1, name: "Главная", item: `${SITE}/`},
+                    {"@type": "ListItem", position: 2, name: l.short, item: url},
+                ]},
             ]).replace(/</g, "\\u003c");
             let html = tpl
                 .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(l.title)}</title>`)

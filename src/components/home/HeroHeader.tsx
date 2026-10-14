@@ -56,7 +56,7 @@ export default function HeroHeader() {
     {/* HERO */}
     <section id="hero" className="pt-16 min-h-screen flex flex-col">
       <div className="flex-1 relative overflow-hidden flex">
-        <img src={HERO_PHOTO} alt="Передача ключей от квартиры" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: "70% center" }} />
+        <img src={HERO_PHOTO} alt="Передача ключей от квартиры" width={1800} height={1004} fetchPriority="high" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: "70% center" }} />
         <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(11,27,51,0.92) 0%, rgba(11,27,51,0.75) 40%, rgba(11,27,51,0.2) 75%, rgba(11,27,51,0) 100%)" }} />
         <div className="relative flex flex-col justify-center px-8 md:px-16 lg:px-24 py-20 w-full max-w-3xl">
           <p className="animate-fade-up text-xs uppercase tracking-[0.2em] text-blue-300 font-body mb-5">
