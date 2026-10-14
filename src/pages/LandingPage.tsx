@@ -63,6 +63,8 @@ const LandingPage = () => {
 
   if (!page) return <NotFound />;
 
+  const related = page.related.map(getLanding).filter((l): l is NonNullable<typeof l> => Boolean(l));
+
   return (
     <div className="min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
       <ContactModals />
@@ -156,6 +158,23 @@ const LandingPage = () => {
           </Accordion>
         </section>
 
+        {related.length > 0 && (
+          <section className="py-16 max-w-6xl mx-auto px-6">
+            <h2 className="font-display text-3xl font-light mb-6">Что ещё пригодится</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              {related.map(l => (
+                <Link key={l.slug} to={`/${l.slug}`} className="group border border-[hsl(var(--border))] rounded-lg p-6 hover:border-[var(--blue)] hover:shadow-md transition-all">
+                  <h3 className="font-display text-xl font-semibold mb-2 flex items-center gap-2">
+                    <Icon name={l.icon} size={18} fallback="Home" className="text-[var(--blue)]" />{l.short}
+                  </h3>
+                  <p className="font-body text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-3">{l.lead}</p>
+                  <span className="inline-flex items-center gap-1 text-sm text-[var(--blue)] font-body">Подробнее <Icon name="ArrowRight" size={14} /></span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         <section className="py-16 bg-[hsl(var(--secondary))]">
           <div className="max-w-6xl mx-auto px-6">
             <h2 className="font-display text-3xl font-light mb-6">Другие услуги</h2>
@@ -172,9 +191,16 @@ const LandingPage = () => {
       </main>
 
       <footer className="bg-[hsl(var(--foreground))] py-8">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-3">
-          <p className="font-body text-gray-500 text-xs">© 2025 Фёдоров Дмитрий. Ярославль, ул. Победы, 37 (этаж 1)</p>
-          <Link to="/" className="font-body text-gray-400 text-xs hover:text-white transition-colors">На главную</Link>
+        <div className="max-w-6xl mx-auto px-6">
+          <nav aria-label="Услуги" className="flex flex-wrap gap-x-5 gap-y-2 mb-6">
+            {LANDINGS.map(l => (
+              <Link key={l.slug} to={`/${l.slug}`} className="font-body text-xs text-gray-400 hover:text-white transition-colors">{l.short}</Link>
+            ))}
+          </nav>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-3">
+            <p className="font-body text-gray-500 text-xs">© 2025 Фёдоров Дмитрий. Ярославль, ул. Победы, 37 (этаж 1)</p>
+            <Link to="/" className="font-body text-gray-400 text-xs hover:text-white transition-colors">На главную</Link>
+          </div>
         </div>
       </footer>
     </div>
