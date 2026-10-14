@@ -8,21 +8,25 @@ const SERVICES = [
   {
     icon: "Building2",
     title: "Новостройки",
+    to: "/novostroyki-yaroslavl",
     desc: "Поиск ликвидных ЖК. Доступ к закрытым акциям застройщиков. Все виды ипотеки: стандартная, военная, семейная, льготная. Партнёрские скидки ниже рынка.",
   },
   {
     icon: "Home",
     title: "Вторичное жильё",
+    to: "/prodat-kvartiru-yaroslavl",
     desc: "Профессиональная оценка рыночной стоимости. Продажа в сжатые сроки при максимальной цене. Полное юридическое сопровождение и безопасное проведение сделки.",
   },
   {
     icon: "Trees",
     title: "Дома и участки",
+    to: "/kupit-dom-yaroslavskaya-oblast",
     desc: "Инженерно-геологический анализ участка и юридическая проверка документов. Подбор проверенного подрядчика: сотрудничаем с более чем 30 организациями по строительству домов.",
   },
   {
     icon: "Briefcase",
     title: "Коммерческая",
+    to: "/kommercheskaya-nedvizhimost-yaroslavl",
     desc: "Офисы, склады, торговые помещения. Анализ инвестиционной привлекательности. Оценка арендного потока и доходности объекта под ключ.",
   },
 ];
@@ -132,13 +136,14 @@ export default function ServicesBlock() {
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {SERVICES.map((s) => (
-          <div key={s.title} className="group border border-[hsl(var(--border))] rounded-lg p-7 hover:border-[var(--blue)] hover:shadow-md transition-all duration-200">
+          <Link key={s.title} to={s.to} className="group block border border-[hsl(var(--border))] rounded-lg p-7 hover:border-[var(--blue)] hover:shadow-md transition-all duration-200">
             <div className="w-10 h-10 rounded flex items-center justify-center bg-[var(--blue-light)] text-[var(--blue)] mb-5 group-hover:bg-[var(--blue)] group-hover:text-white transition-colors">
               <Icon name={s.icon} size={20} fallback="Home" />
             </div>
             <h3 className="font-display text-xl font-semibold mb-3">{s.title}</h3>
             <p className="font-body text-sm text-[hsl(var(--muted-foreground))] leading-relaxed">{s.desc}</p>
-          </div>
+            <span className="inline-flex items-center gap-1 mt-4 text-sm text-[var(--blue)] font-body">Подробнее <Icon name="ArrowRight" size={14} /></span>
+          </Link>
         ))}
       </div>
     </section>

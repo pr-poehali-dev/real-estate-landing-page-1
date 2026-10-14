@@ -2,7 +2,6 @@ import {defineConfig} from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import {componentTagger} from "pp-tagger";
-import fs from "fs";
 import {LANDINGS} from "./src/data/landings";
 
 const SITE = "https://rieltor-yaroslavl.ru";
@@ -11,11 +10,11 @@ const esc = (v: string) => v.replace(/&/g, "&amp;").replace(/"/g, "&quot;").repl
 const prerenderLandings = {
     name: "prerender-landings",
     apply: "build" as const,
-    closeBundle() {
-        const dist = path.resolve(__dirname, "dist");
-        const tplPath = path.join(dist, "index.html");
-        if (!fs.existsSync(tplPath)) return;
-        const tpl = fs.readFileSync(tplPath, "utf-8");
+    enforce: "post" as const,
+    generateBundle(_: unknown, bundle: Record<string, any>) {
+        const tplAsset = bundle["index.html"];
+        if (!tplAsset || tplAsset.type !== "asset") return;
+        const tpl = String(tplAsset.source);
         for (const l of LANDINGS) {
             const url = `${SITE}/${l.slug}`;
             const ld = JSON.stringify([
@@ -34,9 +33,7 @@ const prerenderLandings = {
                 .replace(/<meta name="twitter:description" content="[^"]*"\/?>/, `<meta name="twitter:description" content="${esc(l.description)}"/>`);
             html = html.replace("</head>", `<script type="application/ld+json" id="prerender-ld">${ld}</script>\n</head>`);
             html = html.replace('<div id="root"></div>', `<div id="root"><h1>${esc(l.h1)}</h1><p>${esc(l.lead)}</p></div>`);
-            const dir = path.join(dist, l.slug);
-            fs.mkdirSync(dir, {recursive: true});
-            fs.writeFileSync(path.join(dir, "index.html"), html);
+            (this as any).emitFile({type: "asset", fileName: `${l.slug}/index.html`, source: html});
         }
     },
 };
