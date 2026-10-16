@@ -11,18 +11,22 @@ import { LANDINGS } from "./data/landings";
 
 const queryClient = new QueryClient();
 
+export const AppRoutes = () => (
+  <Routes>
+    <Route path="/" element={<Index />} />
+    {LANDINGS.map(l => <Route key={l.slug} path={`/${l.slug}`} element={<LandingPage />} />)}
+    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+    <Route path="*" element={<NotFound />} />
+  </Routes>
+);
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {LANDINGS.map(l => <Route key={l.slug} path={`/${l.slug}`} element={<LandingPage />} />)}
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AppRoutes />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

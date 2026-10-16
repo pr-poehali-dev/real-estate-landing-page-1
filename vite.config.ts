@@ -1,4 +1,5 @@
-import {defineConfig} from "vite";
+import {defineConfig, createServer} from "vite";
+import fs from "fs";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import {componentTagger} from "pp-tagger";
@@ -41,6 +42,51 @@ const prerenderLandings = {
         }
     },
 };
+
+const prerenderApp = (() => {
+    let outDir = "";
+    let root = "";
+    return {
+        name: "prerender-app",
+        apply: "build" as const,
+        enforce: "post" as const,
+        configResolved(c: any) {
+            root = c.root;
+            outDir = path.resolve(c.root, c.build.outDir);
+        },
+        async closeBundle() {
+            let server: any;
+            try {
+                server = await createServer({
+                    root,
+                    configFile: false,
+                    mode: "production",
+                    logLevel: "error",
+                    appType: "custom",
+                    plugins: [],
+                    esbuild: {jsx: "automatic", jsxDev: false},
+                    resolve: {alias: {"@": path.resolve(root, "./src")}},
+                    server: {middlewareMode: true, hmr: false, ws: false},
+                });
+                const {render} = await server.ssrLoadModule("/src/entry-server.tsx");
+                const targets = [{url: "/", file: "index.html"}, ...LANDINGS.map(l => ({url: `/${l.slug}`, file: `${l.slug}/index.html`}))];
+                for (const t of targets) {
+                    const file = path.join(outDir, t.file);
+                    if (!fs.existsSync(file)) continue;
+                    const html = render(t.url);
+                    if (!html || html.length < 500) continue;
+                    const src = fs.readFileSync(file, "utf-8");
+                    const out = src.replace(/<div id="root">[\s\S]*?<\/div>(?=\s*<script|\s*\n|\s*<\/body)/, () => `<div id="root">${html}</div>`);
+                    if (out !== src) fs.writeFileSync(file, out);
+                }
+            } catch (e) {
+                console.warn("[prerender-app] пропущено:", (e as Error).message);
+            } finally {
+                if (server) await server.close();
+            }
+        },
+    };
+})();
 
 // HMR-сокет превью рвёт инфраструктура: ingress-nginx на каждом reload
 // конфига (захват/освобождение любого dev-пода) через 30 с закрывает все
@@ -145,6 +191,7 @@ export default defineConfig(({mode}) => ({
         react(),
         hmrKeepalive,
         prerenderLandings,
+        prerenderApp,
         mode === 'development' &&
         componentTagger(),
     ].filter(Boolean),
